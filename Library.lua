@@ -7,25 +7,25 @@ if not Library.libraries then
 end
 
 function Library.register(name, version, library)
-	if not _.libraries[name] then
-    _.libraries[name] = {}
+	if not Library.libraries[name] then
+    Library.libraries[name] = {}
   end
   local major, minor, patch = _.parseSemanticVersion(version)
-  if not _.libraries[name][major] then
-    _.libraries[name][major] = {}
+  if not Library.libraries[name][major] then
+    Library.libraries[name][major] = {}
   end
-  if not _.libraries[name][major][minor] then
-    _.libraries[name][major][minor] = {}
+  if not Library.libraries[name][major][minor] then
+    Library.libraries[name][major][minor] = {}
   end
-  if not _.libraries[name][major][minor][patch] then
-    _.libraries[name][major][minor][patch] = library
+  if not Library.libraries[name][major][minor][patch] then
+    Library.libraries[name][major][minor][patch] = library
   end
   if (
-    not _.libraries[name][major].highest or
-      minor > _.libraries[name][major].highest.version.minor or
-      (minor == _.libraries[name][major].highest.version.minor and patch > _.libraries[name][major].highest.version.patch)
+    not Library.libraries[name][major].highest or
+      minor > Library.libraries[name][major].highest.version.minor or
+      (minor == Library.libraries[name][major].highest.version.minor and patch > Library.libraries[name][major].highest.version.patch)
   ) then
-    _.libraries[name][major].highest = {
+    Library.libraries[name][major].highest = {
       version = {
         major = major,
         minor = minor,
@@ -37,7 +37,7 @@ function Library.register(name, version, library)
 end
 
 function Library.retrieve(name, versionConstraint)
-  local versions = _.libraries[name]
+  local versions = Library.libraries[name]
   if versions then
     local library
     if string.sub(versionConstraint, 1, 1) == '^' then
@@ -48,6 +48,21 @@ function Library.retrieve(name, versionConstraint)
       library = versions[versionConstraint]
     end
     return library
+  end
+  return nil
+end
+
+function Library.hasRegistered(name, version)
+  local major, minor, patch = _.parseSemanticVersion(version)
+	local a = Library.libraries[name]
+  if a then
+    local b = a[major]
+    if b then
+      local c = b[minor]
+      if c then
+        return c[patch]
+      end
+    end
   end
   return nil
 end
