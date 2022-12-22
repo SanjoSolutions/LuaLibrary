@@ -52,7 +52,7 @@ function Library.retrieve(name, versionConstraint)
   return nil
 end
 
-function Library.hasRegistered(name, version)
+function Library.isRegistered(name, version)
   local major, minor, patch = _.parseSemanticVersion(version)
 	local a = Library.libraries[name]
   if a then
