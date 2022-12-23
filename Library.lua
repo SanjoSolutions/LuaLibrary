@@ -82,7 +82,6 @@ if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
   function _.resolveLibrary(name, versionConstraint)
     local library
     if string.sub(versionConstraint, 1, 1) == '^' then
-      print(1)
       local version = string.sub(versionConstraint, 2)
       local major = _.parseSemanticVersion(version)
       library = _.retrieveHighestVersionWithMajor(name, major)
