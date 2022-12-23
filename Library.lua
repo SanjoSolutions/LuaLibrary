@@ -14,7 +14,7 @@ end
 
 function _.parseSemanticVersion(semanticVersion)
   local major, minor, patch = string.match(semanticVersion, '(%d+)%.(%d+)%.(%d+)')
-  return major, minor, patch
+  return tonumber(major, 10), tonumber(minor, 10), tonumber(patch, 10)
 end
 
 if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
