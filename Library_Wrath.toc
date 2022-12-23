@@ -2,4 +2,4 @@
 ## Interface: 30400
 ## Version: 0.2.0
 
-Library.lua
+Library.xml
