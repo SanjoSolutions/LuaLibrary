@@ -7,7 +7,7 @@ if not Library.libraries then
 end
 
 function Library.register(name, version, library)
-	if not Library.libraries[name] then
+  if not Library.libraries[name] then
     Library.libraries[name] = {}
   end
   local major, minor, patch = _.parseSemanticVersion(version)
@@ -37,6 +37,27 @@ function Library.register(name, version, library)
 end
 
 function Library.retrieve(name, versionConstraint)
+  local libraryFacade = {}
+  local resolvedLibrary = nil
+
+  setmetatable(libraryFacade, {
+    __index = function(table, key)
+      if not resolvedLibrary then
+        resolvedLibrary = _.resolveLibrary(name, versionConstraint)
+      end
+
+      if resolvedLibrary then
+        return resolvedLibrary[key]
+      else
+        return nil
+      end
+    end
+  })
+
+  return libraryFacade
+end
+
+function  _.resolveLibrary(name, versionConstraint)
   local versions = Library.libraries[name]
   if versions then
     local library
@@ -54,7 +75,7 @@ end
 
 function Library.isRegistered(name, version)
   local major, minor, patch = _.parseSemanticVersion(version)
-	local a = Library.libraries[name]
+  local a = Library.libraries[name]
   if a then
     local b = a[major]
     if b then
@@ -68,10 +89,10 @@ function Library.isRegistered(name, version)
 end
 
 function _.parseSemanticVersion(semanticVersion)
-	local major, minor, patch = string.match(semanticVersion, '(%d+)%.(%d+)%.(%d+)')
+  local major, minor, patch = string.match(semanticVersion, '(%d+)%.(%d+)%.(%d+)')
   return major, minor, patch
 end
 
 function _.retrieveHighestVersionWithMajor(versions, major)
-	return versions[major].highest.library
+  return versions[major].highest.library
 end
