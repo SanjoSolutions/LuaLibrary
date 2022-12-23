@@ -54,43 +54,45 @@ if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
   end
 
   function Library.retrieve(name, versionConstraint)
-    local libraryFacade = {}
-    local resolvedLibrary = nil
+    local resolvedLibrary = _.resolveLibrary(name, versionConstraint)
 
-    setmetatable(libraryFacade, {
-      __index = function(table, key)
-        if not resolvedLibrary then
-          resolvedLibrary = _.resolveLibrary(name, versionConstraint)
+    if resolvedLibrary then
+      return resolvedLibrary
+    else
+      local libraryFacade = {}
+
+      setmetatable(libraryFacade, {
+        __index = function(table, key)
+          if not resolvedLibrary then
+            resolvedLibrary = _.resolveLibrary(name, versionConstraint)
+          end
+
+          if resolvedLibrary then
+            return resolvedLibrary[key]
+          else
+            return nil
+          end
         end
+      })
 
-        if resolvedLibrary then
-          return resolvedLibrary[key]
-        else
-          return nil
-        end
-      end
-    })
-
-    return libraryFacade
-  end
-
-  function  _.resolveLibrary(name, versionConstraint)
-    local versions = Library.libraries[name]
-    if versions then
-      local library
-      if string.sub(versionConstraint, 1, 1) == '^' then
-        local version = string.sub(versionConstraint, 2)
-        local major = _.parseSemanticVersion(version)
-        library = _.retrieveHighestVersionWithMajor(versions, major)
-      else
-        library = versions[versionConstraint]
-      end
-      return library
+      return libraryFacade
     end
-    return nil
   end
 
-  function Library.isRegistered(name, version)
+  function _.resolveLibrary(name, versionConstraint)
+    local library
+    if string.sub(versionConstraint, 1, 1) == '^' then
+      local version = string.sub(versionConstraint, 2)
+      local major = _.parseSemanticVersion(version)
+      library = _.retrieveHighestVersionWithMajor(name, major)
+    else
+      local version = versionConstraint
+      library = _.retrieveLibraryWithVersion(name, version)
+    end
+    return library
+  end
+
+  function _.retrieveLibraryWithVersion(name, version)
     local major, minor, patch = _.parseSemanticVersion(version)
     local a = Library.libraries[name]
     if a then
@@ -105,7 +107,16 @@ if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
     return nil
   end
 
+  function Library.isRegistered(name, version)
+    return not not _.retrieveLibraryWithVersion(name, version)
+  end
+
   function _.retrieveHighestVersionWithMajor(versions, major)
-    return versions[major].highest.library
+    local versions = Library.libraries[name]
+    if versions and versions[major]then
+      return versions[major].highest.library
+    else
+      return nil
+    end
   end
 end
