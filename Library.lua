@@ -1,4 +1,8 @@
-local version = '0.2.0'
+-- Please make new versions backwards-compatible,
+-- so that the loading strategy of the library "Library" itself (a newer version replaces an older version)
+-- works correctly.
+
+local version = '0.3.0'
 
 local _ = {}
 
@@ -20,8 +24,14 @@ end
 if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
   Library = {
     version = version,
-    libraries = {}
+    libraries = (_G.Library and Library.libraries) or {}
   }
+
+  function Library.create(name, version)
+    local library = {}
+    Library.register(name, version, library)
+    return library
+  end
 
   function Library.register(name, version, library)
     if not Library.libraries[name] then
