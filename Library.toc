@@ -1,5 +1,5 @@
 ## Title: Library
-## Interface: 100100
+## Interface: 100007
 ## Version: 0.3.0
 
 Library.xml
