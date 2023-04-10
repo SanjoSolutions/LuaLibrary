@@ -4,10 +4,10 @@ A library for registering libraries that can be used by add-ons. With this libra
 
 **Functions included:**
 
-* Library.create: a function to create a new library.
-* Library.register: a function to register a library.
-* Library.retrieve: a function to retrieve a library.
-* Library.isRegistered: a function for checking if a library is registered.
+* **Library.create**: a function to create a new library.
+* **Library.register**: a function to register a library.
+* **Library.retrieve**: a function to retrieve a library.
+* **Library.isRegistered**: a function for checking if a library is registered.
 
 It is intended to use [semantic versioning](https://semver.org/) for versions and version constraints.
 
