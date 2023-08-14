@@ -2,7 +2,7 @@
 -- so that the loading strategy of the library "Library" itself (a newer version replaces an older version)
 -- works correctly.
 
-local version = '0.3.0'
+local version = '0.4.0'
 
 local _ = {}
 
