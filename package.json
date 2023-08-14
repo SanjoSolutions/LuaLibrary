@@ -1,3 +1,7 @@
 {
-  "name": "@sanjo-addons/library"
+  "name": "@sanjo-addons/library",
+  "version": "0.5.0",
+  "publishConfig": {
+    "access": "public"
+  }
 }
