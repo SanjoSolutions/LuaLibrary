@@ -13,10 +13,10 @@ It is intended to use [semantic versioning](https://semver.org/) for versions an
 
 **Supported version constraints:**
 
-* The newest version with a specific major version. E.g. "^1.0.0"
+* The newest version with a specific major version. E.g. "^2.0.0"
 * A specific version. E.g. "1.0.0"
 
-It is recommended to use a version constraint for the newest version with a specific version (i.e. "^1.0.0"),
+It is recommended to use a version constraint for the newest version with a specific version (i.e. "^2.0.0"),
 so that the add-on uses the version of the library that is available with the latest bug fixes.
 
 ## How to use
@@ -41,7 +41,7 @@ Library.register('ALibrary', '1.0.0', ALibrary)
 ### Using a library
 
 ```lua
-local ALibrary = Library.retrieve('ALibrary', '^1.0.0')
+local ALibrary = Library.retrieve('ALibrary', '^2.0.0')
 ```
 
 ### Make it easy to embed a library
