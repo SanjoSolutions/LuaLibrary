@@ -22,6 +22,7 @@ function _.parseSemanticVersion(semanticVersion)
 end
 
 if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
+  --- @class Library
   Library = {
     version = version,
     libraries = (_G.Library and Library.libraries) or {}
