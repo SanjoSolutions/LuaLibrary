@@ -2,7 +2,7 @@
 -- so that the loading strategy of the library "Library" itself (a newer version replaces an older version)
 -- works correctly.
 
-local version = '0.5.0'
+local version = '0.5.1'
 
 local _ = {}
 
@@ -11,8 +11,8 @@ function _.isNewerVersion(a, b)
   local majorB, minorB, patchB = _.parseSemanticVersion(b)
   return (
     majorA > majorB or
-      (majorA == majorB and minorA > minorB) or
-      (majorA == majorB and minorA == minorB and patchA > patchB)
+    (majorA == majorB and minorA > minorB) or
+    (majorA == majorB and minorA == minorB and patchA > patchB)
   )
 end
 
@@ -49,10 +49,10 @@ if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
       Library.libraries[name][major][minor][patch] = library
     end
     if (
-      not Library.libraries[name][major].highest or
-        minor > Library.libraries[name][major].highest.version.minor or
-        (minor == Library.libraries[name][major].highest.version.minor and patch > Library.libraries[name][major].highest.version.patch)
-    ) then
+          not Library.libraries[name][major].highest or
+          minor > Library.libraries[name][major].highest.version.minor or
+          (minor == Library.libraries[name][major].highest.version.minor and patch > Library.libraries[name][major].highest.version.patch)
+        ) then
       Library.libraries[name][major].highest = {
         version = {
           major = major,
@@ -124,7 +124,7 @@ if not _G.Library or _.isNewerVersion(version, _G.Library.version) then
 
   function _.retrieveHighestVersionWithMajor(name, major)
     local versions = Library.libraries[name]
-    if versions and versions[major]then
+    if versions and versions[major] then
       return versions[major].highest.library
     else
       return nil
